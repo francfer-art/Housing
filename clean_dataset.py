@@ -37,6 +37,13 @@ cols_to_check = ['total_rooms', 'total_bedrooms', 'population', 'households', 'm
 for col in cols_to_check:
     df = df[df[col] >= 0]
 
+# Además, limpiamos los valores de longitud y latitud para que estén dentro de los rangos adecuados
+df = df[(df['longitude'] >= -180) & (df['longitude'] <= 180)]
+df = df[(df['latitude'] >= -90) & (df['latitude'] <= 90)]
+
+# También limpiamos las filas que no contienen los valores específicos en la columna 'ocean_proximity'
+valid_values = ['INLAND', '<1H OCEAN', 'NEAR BAY', 'NEAR OCEAN']
+df = df[df['ocean_proximity'].isin(valid_values)]
 # Finalmente mostramos de nuevo por pantalla el número de entradas tras la limpieza
 
 print("Número de entradas despues de la limpieza:", df.shape[0])
